@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-8">Training Results</h1>
+        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-xl font-bold mb-4">Parameter yang Digunakan</h2>
+               <pre class="bg-gray-100 p-4 rounded-md whitespace-pre-wrap">{{ parameters }}</pre>
+        </div>
+        <div class="text-center text-gray-600 mb-8">
+            Hasil dihasilkan pada: {{ timestamp }}
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-bold mb-4">Visualisasi</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <img src="{{ url_for('images', filename='before_sampling.png') }}" alt="Before Sampling" class="w-full">
+                </div>
+                <div>
+                    <img src="{{ url_for('images', filename='after_sampling.png') }}" alt="After Sampling" class="w-full">
+                </div>
+                <div>
+                    <img src="{{ url_for('images', filename='heatmap_macro.png') }}" alt="Heatmap Macro" class="w-full">
+                </div>
+                <div>
+                    <img src="{{ url_for('images', filename='heatmap_weighted.png') }}" alt="Heatmap Weighted" class="w-full">
+                </div>
+<div>
+            <img src="{{ url_for('images', filename='wordcloud.png') }}" alt="Word Cloud" class="w-full">
+        </div>
+            </div>
+            <h2 class="text-xl font-bold mt-8 mb-4">Hasil Evaluasi Model</h2>
+            {% for name, result in results.items() %}
+            <div class="mb-8">
+                <h3 class="text-lg font-bold mb-2">{{ name }} Accuracy: {{ result.accuracy | round(4) }}</h3>
+                <pre class="bg-gray-100 p-4 rounded-md">{{ result.clf_report }}</pre>
+                <div class="mt-4">
+                    <img src="{{ url_for('images', filename=result.conf_matrix) }}" alt="Confusion Matrix" class="w-full md:w-1/2 mx-auto">
+                </div>
+            </div>
+            <hr class="my-6">
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

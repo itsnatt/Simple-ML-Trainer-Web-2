@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Training</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-8">Model Training Interface</h1>
+      <form action="/upload" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
+    <div class="mb-4">
+        <label class="block text-gray-700 font-bold mb-2" for="dataset">Upload Dataset (CSV)</label>
+        <input type="file" name="dataset" id="dataset" class="w-full p-2 border border-gray-300 rounded" required>
+    </div>
+    <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Upload Dataset</button>
+</form>
+        {% if columns %}
+ <form action="/train" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md mt-8">
+    <div class="mb-4">
+        <label class="block text-gray-700 font-bold mb-2" for="dataset">Upload Dataset (CSV)</label>
+        <input type="file" name="dataset" id="dataset" class="w-full p-2 border border-gray-300 rounded" required>
+    </div>
+    <div class="mb-4">
+        <label class="block text-gray-700 font-bold mb-2" for="x_col">Kolom Fitur (X)</label>
+        <select name="x_col" id="x_col" class="w-full p-2 border border-gray-300 rounded" required>
+            <option value="">Pilih Kolom Fitur (X)</option>
+            {% for column in columns %}
+            <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-4">
+        <label class="block text-gray-700 font-bold mb-2" for="y_col">Kolom Label (Y)</label>
+        <select name="y_col" id="y_col" class="w-full p-2 border border-gray-300 rounded" required>
+            <option value="">Pilih Kolom Label (Y)</option>
+            {% for column in columns %}
+            <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+    </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="sampling_method">Metode Sampling</label>
+                <select name="sampling_method" id="sampling_method" class="w-full p-2 border border-gray-300 rounded">
+                    <option value="none">None</option>
+                    <option value="smote">SMOTE</option>
+                    <option value="oversample">Oversample</option>
+                    <option value="undersample">Undersample</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="experiment_name">Nama Eksperimen</label>
+                <input type="text" name="experiment_name" id="experiment_name" class="w-full p-2 border border-gray-300 rounded" value="test-1" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="test_size">Test Size</label>
+                <input type="number" step="0.01" name="test_size" id="test_size" class="w-full p-2 border border-gray-300 rounded" value="0.2" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="random_state">Random State</label>
+                <input type="number" name="random_state" id="random_state" class="w-full p-2 border border-gray-300 rounded" value="42" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="max_features">Max Features</label>
+                <input type="number" name="max_features" id="max_features" class="w-full p-2 border border-gray-300 rounded" value="5000" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="ngram_range">Ngram Range</label>
+                <input type="text" name="ngram_range" id="ngram_range" class="w-full p-2 border border-gray-300 rounded" value="1,2" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="knn_neighbors">KNN Neighbors</label>
+                <input type="number" name="knn_neighbors" id="knn_neighbors" class="w-full p-2 border border-gray-300 rounded" value="7" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="knn_metric">KNN Metric</label>
+                <input type="text" name="knn_metric" id="knn_metric" class="w-full p-2 border border-gray-300 rounded" value="euclidean" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="knn_weights">KNN Weights</label>
+                <input type="text" name="knn_weights" id="knn_weights" class="w-full p-2 border border-gray-300 rounded" value="distance" required>
+            </div>
+<div class="mb-4">
+    <label class="block text-gray-700 font-bold mb-2" for="svm_kernel">SVM Kernel</label>
+    <select name="svm_kernel" id="svm_kernel" class="w-full p-2 border border-gray-300 rounded" required>
+        <option value="rbf">RBF</option>
+        <option value="linear">Linear</option>
+        <option value="poly">Polynomial</option>
+        <option value="sigmoid">Sigmoid</option>
+    </select>
+</div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="svm_c">SVM C</label>
+                <input type="number" step="0.1" name="svm_c" id="svm_c" class="w-full p-2 border border-gray-300 rounded" value="1.0" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="svm_gamma">SVM Gamma</label>
+                <input type="text" name="svm_gamma" id="svm_gamma" class="w-full p-2 border border-gray-300 rounded" value="scale" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="nb_alpha">Naive Bayes Alpha</label>
+                <input type="number" step="0.1" name="nb_alpha" id="nb_alpha" class="w-full p-2 border border-gray-300 rounded" value="0.5" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="lr_max_iter">Logistic Regression Max Iter</label>
+                <input type="number" name="lr_max_iter" id="lr_max_iter" class="w-full p-2 border border-gray-300 rounded" value="2000" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="lr_c">Logistic Regression C</label>
+                <input type="number" step="0.1" name="lr_c" id="lr_c" class="w-full p-2 border border-gray-300 rounded" value="0.5" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="lr_solver">Logistic Regression Solver</label>
+                <input type="text" name="lr_solver" id="lr_solver" class="w-full p-2 border border-gray-300 rounded" value="liblinear" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="rf_n_estimators">Random Forest N Estimators</label>
+                <input type="number" name="rf_n_estimators" id="rf_n_estimators" class="w-full p-2 border border-gray-300 rounded" value="200" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="rf_max_depth">Random Forest Max Depth</label>
+                <input type="number" name="rf_max_depth" id="rf_max_depth" class="w-full p-2 border border-gray-300 rounded" value="10" required>
+            </div>
+          <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600" onclick="showLoading()">Train Model</button>
+</form>
+        {% endif %}
+    </div>
+
+    <script>
+    function showLoading() {
+        document.getElementById('loading').classList.remove('hidden');
+    }
+    </script>
+</body>
+</html>

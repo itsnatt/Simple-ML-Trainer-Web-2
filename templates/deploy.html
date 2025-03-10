@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Deployment</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-8">Model Deployment</h1>
+        <form action="/deploy" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="tfidf_model_url">TF-IDF Model URL</label>
+                <input type="text" name="tfidf_model_url" id="tfidf_model_url" class="w-full p-2 border border-gray-300 rounded" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="algorithm_model_url">Algorithm Model URL</label>
+                <input type="text" name="algorithm_model_url" id="algorithm_model_url" class="w-full p-2 border border-gray-300 rounded" required>
+            </div>
+            
+            <h2 class="text-xl font-bold mb-4">Single Prediction</h2>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="single_text">Masukkan Teks</label>
+                <textarea name="single_text" id="single_text" class="w-full p-2 border border-gray-300 rounded" rows="3"></textarea>
+            </div>
+            <button type="submit" name="single_prediction" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 mb-8">
+                Prediksi Teks
+            </button>
+            
+            <h2 class="text-xl font-bold mb-4">Batch Prediction</h2>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="dataset">Upload Dataset (CSV)</label>
+                <input type="file" name="dataset" id="dataset" class="w-full p-2 border border-gray-300 rounded">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="target_column">Kolom Target</label>
+                <input type="text" name="target_column" id="target_column" class="w-full p-2 border border-gray-300 rounded">
+            </div>
+            <button type="submit" name="batch_prediction" class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600">
+                Prediksi Dataset
+            </button>
+        </form>
+
+        {% if prediction %}
+        <div class="bg-white p-6 rounded-lg shadow-md mt-8">
+            <h2 class="text-xl font-bold mb-4">Hasil Prediksi</h2>
+            <p class="text-gray-700">Prediksi: <span class="font-bold">{{ prediction }}</span></p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
